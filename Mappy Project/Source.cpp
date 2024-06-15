@@ -83,21 +83,14 @@ int main(void)
             {
                 render = true;
                 if (keys[DOWN])
-                    player.UpdateSprites(WIDTH, HEIGHT, 4);
+                    player.UpdateSprites(WIDTH, HEIGHT, 3);
                 else if (keys[LEFT])
                     player.UpdateSprites(WIDTH, HEIGHT, 0);
                 else if (keys[RIGHT])
                     player.UpdateSprites(WIDTH, HEIGHT, 1);
-                else if (keys[UP] && keys[RIGHT] && player.climbCollide())
+                else if (keys[UP])
                     player.UpdateSprites(WIDTH, HEIGHT, 2);
-                else if (keys[UP] && keys[LEFT] && player.climbCollide())
-                    player.UpdateSprites(WIDTH, HEIGHT, 3);
-                else if (keys[DOWN] && keys[RIGHT] && player.climbCollide())
-                    player.UpdateSprites(WIDTH, HEIGHT, 6);
-                else if (keys[DOWN] && keys[LEFT] && player.climbCollide())
-                    player.UpdateSprites(WIDTH, HEIGHT, 7);
-                else
-                    player.UpdateSprites(WIDTH, HEIGHT, 2);
+              
                 render = true;
 
                 if (player.CollisionEndBlock())
@@ -189,7 +182,6 @@ int main(void)
 
                 //draw foreground tiles
                 MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
-                jump = player.jumping(jump, JUMPIT);
                 player.DrawSprites(xOff, yOff);
             }
             al_flip_display();
@@ -216,32 +208,6 @@ bool endValue(int x, int y)
     data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
 
     if (data->user1 == 10)
-    {
-        return true;
-    }
-    else
-        return false;
-}
-
-bool climbValue(int x, int y)
-{
-    BLKSTR* data;
-    data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
-
-    if (data->user1 == 7)
-    {
-        return true;
-    }
-    else
-        return false;
-}
-
-bool throughValue(int x, int y)
-{
-    BLKSTR* data;
-    data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
-
-    if (data->user1 == 6)
     {
         return true;
     }

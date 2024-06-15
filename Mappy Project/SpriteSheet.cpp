@@ -19,7 +19,7 @@ void Sprite::InitSprites(int width, int height, int xInit, int yInit)
 	frameCount = 0;
 	frameDelay = 6;
 	frameWidth = 50;
-	frameHeight = 64;
+	frameHeight = 28;
 	animationColumns = 3;
 	animationDirection = 1;
 
@@ -33,86 +33,50 @@ void Sprite::UpdateSprites(int width, int height, int dir)
 	int oldy = y;
 	bool isMoving = false;
 
-	if(dir == 1){ //right key
-		animationDirection = 1; 
-		x+=2; 
-		if (++frameCount > frameDelay)
-		{
-			frameCount=0;
-			if (++curFrame > maxFrame)
-				curFrame=1;
-		}
-	} else if (dir == 0){ //left key
-		animationDirection = 0; 
-		x-=2; 
-		if (++frameCount > frameDelay)
-		{
-			frameCount=0;
-			if (++curFrame > maxFrame)
-				curFrame=1;
-		}
-	}
-
-	else if (dir == 2) { // Climbing right
+	if (dir == 1) { //right key
 		animationDirection = 1;
-		if (climbCollide()) {
-			if (++frameCount > frameDelay)
-			{
-				frameCount = 0;
-				if (++curFrame > maxFrame)
-					curFrame = 1;
-				y -= 32;
-				x += 32;
-			}
+		x += 2;
+		isMoving = true;
+		if (++frameCount > frameDelay)
+		{
+			frameCount = 0;
+			if (++curFrame > maxFrame)
+				curFrame = 1;
 		}
 	}
-	else if (dir == 3) { // Climbing left
+	else if (dir == 0) { //left key
 		animationDirection = 0;
-		if (climbCollide()) {
-			if (++frameCount > frameDelay)
-			{
-				frameCount = 0;
-				if (++curFrame > maxFrame)
-					curFrame = 2;
-				y -= 32;  
-				x -= 32;  
-			}
+		isMoving = true;
+		x -= 2;
+		if (++frameCount > frameDelay)
+		{
+			frameCount = 0;
+			if (++curFrame > maxFrame)
+				curFrame = 1;
 		}
 	}
-
-	else if (dir == 6) { // Climbing down and right
-		animationDirection = 1;
-		if (climbCollide()) {
-			if (++frameCount > frameDelay)
-			{
-				frameCount = 0;
-				if (++curFrame > maxFrame)
-					curFrame = 1;
-				y += 32; // Move down
-				x += 32; // Move right
-			}
+	else if (dir == 2) { //up key
+		animationDirection = 0;
+		y -= 2;
+		isMoving = true;
+		if (++frameCount > frameDelay)
+		{
+			frameCount = 0;
+			if (++curFrame > maxFrame)
+				curFrame = 1;
 		}
 	}
-	else if (dir == 7) { 
-		animationDirection = 0; 
-		if (climbCollide()) {
-			if (++frameCount > frameDelay)
-			{
-				frameCount = 0;
-				if (++curFrame > maxFrame)
-					curFrame = 2;
-				y += 32; // Move down
-				x -= 32; // Move left
-			}
+	else if (dir == 3) { //down key
+		animationDirection = 0;
+		y += 2;
+		isMoving = true;
+		if (++frameCount > frameDelay)
+		{
+			frameCount = 0;
+			if (++curFrame > maxFrame)
+				curFrame = 1;
 		}
 	}
-
-	else if (dir == 4) {
-		if (throughCollide()) {
-			y += 36;
-		}
-	}
-	
 	if (!isMoving) {
 		animationDirection = dir;
 	}
@@ -134,12 +98,24 @@ void Sprite::UpdateSprites(int width, int height, int dir)
 		}
 	}
 
-	if (y + frameHeight > height) {
-		y = height - frameHeight;
+	else if (animationDirection == 2)
+	{
+		if (collided(x, y)) { //collision detection to the right
+			x = oldx;
+			y = oldy;
+		}
 	}
 
-	if (y < 32) {
-		y = 33;
+	else if (animationDirection == 3)
+	{
+		if (collided(x, y + frameHeight)) { //collision detection to the right
+			x = oldx;
+			y = oldy;
+		}
+	}
+
+	if (y + frameHeight > height) {
+		y = height - frameHeight;
 	}
 
 }
@@ -167,47 +143,3 @@ void Sprite::DrawSprites(int xoffset, int yoffset)
 	}
 }
 
-
-int Sprite::jumping(int jump, const int JUMPIT)
-{
-	//handle jumping
-	if (jump == JUMPIT) {
-		if (!collided(x + frameWidth / 2, y + frameHeight + 5))
-			jump = 0;
-	}
-	else
-	{
-		y -= jump / 3;
-		jump--;
-		curFrame = 9;
-	}
-
-	if (jump < 0)
-	{
-		if (collided(x + frameWidth / 2, y + frameHeight))
-		{
-			jump = JUMPIT;
-			while (collided(x + frameWidth / 2, y + frameHeight))
-			{
-				y -= 3;
-			}
-		}
-	}
-	return jump;
-}
-
-bool Sprite::throughCollide()
-{
-	if (throughValue(x + frameWidth / 2, y + frameHeight + 5))
-		return true;
-	else
-		return false;
-}
-
-bool Sprite::climbCollide()
-{
-	if (climbValue(x + frameWidth / 2, y + frameHeight + 5))
-		return true;
-	else
-		return false;
-}

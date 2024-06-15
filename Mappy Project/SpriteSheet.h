@@ -18,13 +18,10 @@ public:
 	void UpdateSprites(int width, int height, int dir); //dir 1 = right, 0 = left, 2 = Standing Still
 	void DrawSprites(int xoffset, int yoffset);
 	bool CollideSprite();
-	bool climbCollide();
-	bool throughCollide();
 	float getX() {return x;}
 	float getY() {return y;}
 	int getWidth() {return frameWidth;}
 	int getHeight() {return frameHeight;}
-	int jumping(int jump, const int JUMPIT);
 	bool CollisionEndBlock();
 	bool jump;
 
