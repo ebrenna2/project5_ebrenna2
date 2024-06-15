@@ -19,11 +19,11 @@ void Sprite::InitSprites(int width, int height, int xInit, int yInit)
 	frameCount = 0;
 	frameDelay = 6;
 	frameWidth = 50;
-	frameHeight = 28;
-	animationColumns = 3;
+	frameHeight = 32;
+	animationColumns = 6;
 	animationDirection = 1;
 
-	image = al_load_bitmap("fishies.bmp");
+	image = al_load_bitmap("erm.bmp");
 	al_convert_mask_to_alpha(image, al_map_rgb(255,0,255));
 }
 
@@ -63,7 +63,7 @@ void Sprite::UpdateSprites(int width, int height, int dir)
 		{
 			frameCount = 0;
 			if (++curFrame > maxFrame)
-				curFrame = 1;
+				curFrame = 4;
 		}
 	}
 	else if (dir == 3) { //down key
@@ -74,7 +74,7 @@ void Sprite::UpdateSprites(int width, int height, int dir)
 		{
 			frameCount = 0;
 			if (++curFrame > maxFrame)
-				curFrame = 1;
+				curFrame = 4;
 		}
 	}
 	if (!isMoving) {
@@ -100,7 +100,7 @@ void Sprite::UpdateSprites(int width, int height, int dir)
 
 	else if (animationDirection == 2)
 	{
-		if (collided(x, y)) { //collision detection to the right
+		if (collided(x, y)) { //collision detection to the up
 			x = oldx;
 			y = oldy;
 		}
@@ -108,7 +108,7 @@ void Sprite::UpdateSprites(int width, int height, int dir)
 
 	else if (animationDirection == 3)
 	{
-		if (collided(x, y + frameHeight)) { //collision detection to the right
+		if (collided(x, y + frameHeight)) { //collision detection to the down
 			x = oldx;
 			y = oldy;
 		}
@@ -118,6 +118,14 @@ void Sprite::UpdateSprites(int width, int height, int dir)
 		y = height - frameHeight;
 	}
 
+	if (CollideSprite()) {
+        x = oldx;
+        y = oldy;
+    }
+
+	if (y + frameHeight > height) {
+		y = height - frameHeight;
+	}
 }
 
 bool Sprite::CollisionEndBlock()
@@ -138,8 +146,22 @@ void Sprite::DrawSprites(int xoffset, int yoffset)
 	}else if (animationDirection == 0 ){
 		al_draw_bitmap_region(image, fx, fy, frameWidth,frameHeight, x-xoffset, y-yoffset, ALLEGRO_FLIP_HORIZONTAL);
 	}else if (animationDirection == 2 ){
-		al_draw_bitmap_region(image,0,0,frameWidth,frameHeight,  x-xoffset, y-yoffset, 0);
+		al_draw_bitmap_region(image,0,0,frameWidth,frameHeight,  x-xoffset, y-yoffset, ALLEGRO_FLIP_VERTICAL);
 
 	}
+
+	else if (animationDirection == 3) {
+		al_draw_bitmap_region(image, 0, 0, frameWidth, frameHeight, x - xoffset, y - yoffset, 0);
+
+	}
+}
+
+bool Sprite::CollideSprite() {
+	if (collided(x, y + frameHeight) || collided(x + frameWidth, y + frameHeight) || collided(x + frameWidth / 2, y + frameHeight / 2))
+	{
+		return true;
+	}
+
+	return false;
 }
 

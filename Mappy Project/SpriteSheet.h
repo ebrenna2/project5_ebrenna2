@@ -9,8 +9,6 @@ class Sprite
 {
 	friend int collided(int x, int y);
 	friend bool endValue( int x, int y );
-	friend bool climbValue(int x, int y);
-	friend bool throughValue(int x, int y);
 public:
 	Sprite();
 	~Sprite();
