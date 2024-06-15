@@ -23,7 +23,7 @@ void Sprite::InitSprites(int width, int height)
 	animationColumns = 8;
 	animationDirection = 1;
 
-	image = al_load_bitmap("guy.bmp");
+	image = al_load_bitmap("fishies.bmp");
 	al_convert_mask_to_alpha(image, al_map_rgb(255,0,255));
 }
 
