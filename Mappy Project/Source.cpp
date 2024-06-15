@@ -48,7 +48,9 @@ int main(void)
     al_init_font_addon();
     al_init_ttf_addon();
     ALLEGRO_FONT* font = al_load_ttf_font("AppleGaramond.ttf", 36, 0);
-    player.InitSprites(WIDTH, HEIGHT);
+    int xInit = 0;
+    int yInit = 195;
+    player.InitSprites(WIDTH, HEIGHT, xInit, yInit);
 
     int xOff = 0;
     int yOff = 0;

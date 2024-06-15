@@ -8,19 +8,19 @@ Sprite::~Sprite()
 {
 	al_destroy_bitmap(image);
 }
-void Sprite::InitSprites(int width, int height)
+void Sprite::InitSprites(int width, int height, int xInit, int yInit)
 {
-	x = 80;
-	y = -10;
+	x = xInit;
+	y = yInit;
 
 
-	maxFrame = 8;
+	maxFrame = 2;
 	curFrame = 0;
 	frameCount = 0;
 	frameDelay = 6;
 	frameWidth = 50;
 	frameHeight = 64;
-	animationColumns = 8;
+	animationColumns = 3;
 	animationDirection = 1;
 
 	image = al_load_bitmap("fishies.bmp");
