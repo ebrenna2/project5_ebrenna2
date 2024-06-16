@@ -15,7 +15,7 @@ public:
 	void resetTimer();
 	int getRemainingTime();
 	void updateTimer();
-	void drawTimer();
+	void drawTimer(ALLEGRO_DISPLAY* display);
 
 private:
 	int currentLevel;

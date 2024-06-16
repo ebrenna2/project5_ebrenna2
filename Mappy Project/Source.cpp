@@ -182,6 +182,7 @@ int main(void)
 
                 //draw foreground tiles
                 MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
+                MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
                 player.DrawSprites(xOff, yOff);
             }
             al_flip_display();
