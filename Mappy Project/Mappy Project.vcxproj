@@ -83,11 +83,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Levels.cpp" />
     <ClCompile Include="mappy_A5.c" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Levels.h" />
     <ClInclude Include="mappy_A5.h" />
     <ClInclude Include="SpriteSheet.h" />
   </ItemGroup>
