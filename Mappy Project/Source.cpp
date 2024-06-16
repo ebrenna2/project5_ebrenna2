@@ -53,7 +53,7 @@ int main(void) {
     al_start_timer(fps_timer);
     al_start_timer(game_timer);
 
-    player.InitSprites(WIDTH, HEIGHT, 0, 195);
+    player.InitSprites(WIDTH, HEIGHT, 3, 195);
 
     int xOff = 0, yOff = 0;
 
@@ -67,7 +67,11 @@ int main(void) {
                 // Handle sprite movement based on keyboard input
                 if (!levels.isGameOver()) {
                     if (keys[DOWN]) player.UpdateSprites(WIDTH, HEIGHT, 3);
-                    if (keys[LEFT]) player.UpdateSprites(WIDTH, HEIGHT, 0);
+                    if (keys[LEFT]) {
+                        if (player.getX() > 0) {
+                            player.UpdateSprites(WIDTH, HEIGHT, 0);
+                        }
+                    }
                     if (keys[RIGHT]) player.UpdateSprites(WIDTH, HEIGHT, 1);
                     if (keys[UP]) player.UpdateSprites(WIDTH, HEIGHT, 2);
 
@@ -82,8 +86,8 @@ int main(void) {
 
                     if (player.GameEndBlock())
                     {
-                        al_clear_to_color(al_map_rgb(255, 255, 255));
-                        al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "You Win!");
+                        al_clear_to_color(al_map_rgb(0, 0, 0));
+                        al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Yay! You Win!");
                         al_flip_display();
                         al_rest(10);
                         done = true;

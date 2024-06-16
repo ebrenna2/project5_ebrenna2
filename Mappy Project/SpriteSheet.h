@@ -29,9 +29,8 @@ public:
 private:
 	float x;
 	float y;
-
-	int maxFrame;
-	int curFrame;
+	int curFrameLR, maxFrameLR;
+	int curFrameUD, maxFrameUD;
 	int frameCount;
 	int frameDelay;
 	int frameWidth;

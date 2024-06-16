@@ -37,7 +37,7 @@ bool Levels::loadNextLevel(Sprite &player) {
     sprintf(levelName, "rivermaze%d.fmp", currentLevel);
     if (MapLoad(levelName, 1)) exit(-5);
     resetTimer();
-    player.InitSprites(screenWidth, screenHeight, 0, 195);
+    player.InitSprites(screenWidth, screenHeight, 3, 195);
     return true;
 }
 
