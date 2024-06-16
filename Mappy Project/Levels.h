@@ -6,6 +6,7 @@
 class Levels {
 public:
 	Levels();
+	~Levels();
 	void init(int initiallevel, int totalLevels, int screenWidth, int screenHeight);
 	bool loadNextLevel();
 	void drawMap(int xOffset, int yOffset);
@@ -16,6 +17,7 @@ public:
 	int getRemainingTime();
 	void updateTimer();
 	void drawTimer(ALLEGRO_DISPLAY* display);
+	void events();
 
 private:
 	int currentLevel;
@@ -27,6 +29,8 @@ private:
 	bool gameOver;
 	char levelName[20];
 	ALLEGRO_FONT* font;
+	ALLEGRO_TIMER* timer;
+	ALLEGRO_EVENT_QUEUE* event_queue;
 };
 
 #endif

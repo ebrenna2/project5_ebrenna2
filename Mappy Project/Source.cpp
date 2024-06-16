@@ -6,113 +6,91 @@
 #include <iostream>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include "Levels.h"
 using namespace std;
 //emma brennan
 int collided(int x, int y); 
-bool endValue(int x, int y); 
+bool newLevelValue(int x, int y); 
 
-int main(void)
-{
+int main(void) {
     const int WIDTH = 900;
     const int HEIGHT = 480;
     bool keys[] = { false, false, false, false, false };
     enum KEYS { UP, DOWN, LEFT, RIGHT, SPACE };
-    //variables
+
     bool done = false;
     bool render = false;
-    bool game_over = false; 
 
-    //Player Variable
     Sprite player;
     const int JUMPIT = 1600;
-    int jump = JUMPIT;
 
-    //allegro variable
-    ALLEGRO_DISPLAY* display = NULL;
-    ALLEGRO_EVENT_QUEUE* event_queue = NULL;
-    ALLEGRO_TIMER* timer;
-
-    //program init
-    if (!al_init())                                     //initialize Allegro
-        return -1;
-
-    display = al_create_display(WIDTH, HEIGHT);         //create our display object
-
-    if (!display)                                       //test display object
-        return -1;
-
-    //addon init
+    // Initialize Allegro
+    al_init();
     al_install_keyboard();
     al_init_image_addon();
     al_init_primitives_addon();
     al_init_font_addon();
     al_init_ttf_addon();
+
+    ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
     ALLEGRO_FONT* font = al_load_ttf_font("AppleGaramond.ttf", 36, 0);
-    int xInit = 0;
-    int yInit = 195;
-    player.InitSprites(WIDTH, HEIGHT, xInit, yInit);
 
-    int xOff = 0;
-    int yOff = 0;
-    if (MapLoad("rivermaze1.fmp", 1))
-        return -5;
+    // Initialize levels
+    Levels levels;
+    levels.init(1, 3, WIDTH, HEIGHT);
 
-    event_queue = al_create_event_queue();
-    timer = al_create_timer(1.0 / 60);
+    // Initialize timers
+    ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
+    ALLEGRO_TIMER* fps_timer = al_create_timer(1.0 / 60);
+    ALLEGRO_TIMER* game_timer = al_create_timer(1.0);
 
-    al_register_event_source(event_queue, al_get_timer_event_source(timer));
+    // Register event sources
+    al_register_event_source(event_queue, al_get_timer_event_source(fps_timer));
+    al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-    al_start_timer(timer);
-    //draw the background tiles
-    MapDrawBG(xOff, yOff, 0, 0, WIDTH - 1, HEIGHT - 1);
+    // Start timers
+    al_start_timer(fps_timer);
+    al_start_timer(game_timer);
 
-    //draw foreground tiles
-    MapDrawFG(xOff, yOff, 0, 0, WIDTH - 1, HEIGHT - 1, 0);
-    player.DrawSprites(0, 0);
-    al_flip_display();
-    al_clear_to_color(al_map_rgb(0, 0, 0));
+    player.InitSprites(WIDTH, HEIGHT, 0, 195);
 
-    while (!done)
-    {
+    int xOff = 0, yOff = 0;
+
+    // Game loop
+    while (!done) {
         ALLEGRO_EVENT ev;
         al_wait_for_event(event_queue, &ev);
-        if (ev.type == ALLEGRO_EVENT_TIMER)
-        {
-            if (!game_over) // Only update if game is not over
-            {
-                render = true;
-                if (keys[DOWN])
-                    player.UpdateSprites(WIDTH, HEIGHT, 3);
-                else if (keys[LEFT])
-                    player.UpdateSprites(WIDTH, HEIGHT, 0);
-                else if (keys[RIGHT])
-                    player.UpdateSprites(WIDTH, HEIGHT, 1);
-                else if (keys[UP])
-                    player.UpdateSprites(WIDTH, HEIGHT, 2);
-              
-                render = true;
 
-                if (player.CollisionEndBlock())
-                {
-                    al_clear_to_color(al_map_rgb(0, 0, 0));
-                    al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Congrats! Game Over");
-                    al_flip_display();  
-                    al_rest(10);  
+        if (ev.type == ALLEGRO_EVENT_TIMER) {
+            if (ev.timer.source == fps_timer) {
+                // Handle sprite movement based on keyboard input
+                if (!levels.isGameOver()) {
+                    if (keys[DOWN]) player.UpdateSprites(WIDTH, HEIGHT, 3);
+                    if (keys[LEFT]) player.UpdateSprites(WIDTH, HEIGHT, 0);
+                    if (keys[RIGHT]) player.UpdateSprites(WIDTH, HEIGHT, 1);
+                    if (keys[UP]) player.UpdateSprites(WIDTH, HEIGHT, 2);
 
-                    exit(0);
+                    render = true;
                 }
-
+            }
+            if (ev.timer.source == game_timer) {
+                // Update the game time every second
+                levels.updateTimer();
+                if (levels.isGameOver()) {
+                    al_clear_to_color(al_map_rgb(0, 0, 0));
+                    al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Game Over");
+                    al_flip_display();
+                    al_rest(2.0);
+                    done = true;
+                }
             }
         }
-        else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-        {
+        else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             done = true;
         }
-        else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
-        {
-            switch (ev.keyboard.keycode)
-            {
+        else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+            switch (ev.keyboard.keycode) {
             case ALLEGRO_KEY_ESCAPE:
                 done = true;
                 break;
@@ -130,13 +108,11 @@ int main(void)
                 break;
             case ALLEGRO_KEY_SPACE:
                 keys[SPACE] = true;
-                jump = 30;
+                break;
             }
         }
-        else if (ev.type == ALLEGRO_EVENT_KEY_UP)
-        {
-            switch (ev.keyboard.keycode)
-            {
+        else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
+            switch (ev.keyboard.keycode) {
             case ALLEGRO_KEY_ESCAPE:
                 done = true;
                 break;
@@ -157,42 +133,42 @@ int main(void)
                 break;
             }
         }
-        if (render && al_is_event_queue_empty(event_queue))
-        {
+        if (render && al_is_event_queue_empty(event_queue)) {
             render = false;
             MapUpdateAnims();
-            if (!game_over)
-            {
-                //update the map scroll position
+            if (!levels.isGameOver()) {
                 xOff = player.getX() + player.getWidth() - WIDTH / 2;
                 yOff = player.getY() + player.getHeight() - HEIGHT / 2;
 
-                //avoid moving beyond the map edge
+
                 if (xOff < 0) xOff = 0;
-
-                if (xOff > (mapwidth * mapblockwidth - WIDTH))
-                    xOff = mapwidth * mapblockwidth - WIDTH;
-                if (yOff < 0)
-                    yOff = 0;
-                if (yOff > (mapheight * mapblockheight - HEIGHT))
-                    yOff = mapheight * mapblockheight - HEIGHT;
-
-                //draw the background tiles
+                if (xOff > (mapwidth * mapblockwidth - WIDTH)) xOff = mapwidth * mapblockwidth - WIDTH;
+                if (yOff < 0) yOff = 0;
+                if (yOff > (mapheight * mapblockheight - HEIGHT)) yOff = mapheight * mapblockheight - HEIGHT;
+                al_clear_to_color(al_map_rgb(0, 0, 0));
                 MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
 
-                //draw foreground tiles
                 MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
-                MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
+
+
                 player.DrawSprites(xOff, yOff);
+
+                levels.drawTimer(display);
+            }
+            else {
+                al_clear_to_color(al_map_rgb(0, 0, 0));
+                al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Game Over");
             }
             al_flip_display();
-            al_clear_to_color(al_map_rgb(0, 0, 0));
         }
-    }
-    MapFreeMem();
-    al_destroy_event_queue(event_queue);
-    al_destroy_display(display);                        //destroy our display object
 
+    }
+
+    // Cleanup
+    al_destroy_event_queue(event_queue);
+    al_destroy_display(display);
+    al_destroy_timer(fps_timer);
+    al_destroy_timer(game_timer);
     return 0;
 }
 
@@ -203,7 +179,7 @@ int collided(int x, int y)
     return blockdata->tl;
 }
 
-bool endValue(int x, int y)
+bool newLevelValue(int x, int y)
 {
     BLKSTR* data;
     data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
