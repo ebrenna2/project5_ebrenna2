@@ -28,7 +28,7 @@ void Levels::init(int initialLevel, int totalLevels, int screenWidth, int screen
     if (MapLoad(levelName, currentLevel)) exit(-5);
 }
 
-bool Levels::loadNextLevel() {
+bool Levels::loadNextLevel(Sprite &player) {
     currentLevel++;
     if (currentLevel > totalLevels) {
         gameOver = true;
@@ -37,6 +37,7 @@ bool Levels::loadNextLevel() {
     sprintf(levelName, "rivermaze%d.fmp", currentLevel);
     if (MapLoad(levelName, 1)) exit(-5);
     resetTimer();
+    player.InitSprites(screenWidth, screenHeight, 0, 195);
     return true;
 }
 

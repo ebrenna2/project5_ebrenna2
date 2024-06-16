@@ -1,3 +1,4 @@
+#pragma once
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
@@ -8,7 +9,7 @@ using namespace std;
 class Sprite
 {
 	friend int collided(int x, int y);
-	friend bool endValue( int x, int y );
+	friend bool endValue(int x, int y);
 public:
 	Sprite();
 	~Sprite();

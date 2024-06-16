@@ -10,7 +10,7 @@
 using namespace std;
 //emma brennan
 int collided(int x, int y); 
-bool newLevelValue(int x, int y); 
+bool endValue(int x, int y);
 
 int main(void) {
     const int WIDTH = 900;
@@ -72,6 +72,14 @@ int main(void) {
                     if (keys[UP]) player.UpdateSprites(WIDTH, HEIGHT, 2);
 
                     render = true;
+
+                    if (player.CollisionEndBlock())
+                    {
+                        if (!levels.loadNextLevel(player)) {
+                            done = true;
+                        }
+                    }
+
                 }
             }
             if (ev.timer.source == game_timer) {
@@ -179,7 +187,7 @@ int collided(int x, int y)
     return blockdata->tl;
 }
 
-bool newLevelValue(int x, int y)
+bool endValue(int x, int y)
 {
     BLKSTR* data;
     data = MapGetBlock(x / mapblockwidth, y / mapblockheight);

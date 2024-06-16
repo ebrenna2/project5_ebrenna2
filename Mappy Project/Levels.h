@@ -1,14 +1,16 @@
 #ifndef LEVELS_H
 #define LEVELS_H
+#pragma once
 
 #include "mappy_A5.h"
+#include "SpriteSheet.h"
 #include <allegro5/allegro_font.h>
 class Levels {
 public:
 	Levels();
 	~Levels();
 	void init(int initiallevel, int totalLevels, int screenWidth, int screenHeight);
-	bool loadNextLevel();
+	bool loadNextLevel(Sprite &player);
 	void drawMap(int xOffset, int yOffset);
 	void updateMap(int xOffset, int yOoffset);
 	bool isGameOver();
