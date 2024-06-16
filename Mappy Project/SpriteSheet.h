@@ -1,4 +1,5 @@
 #pragma once
+//header file for sprite
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
@@ -8,10 +9,12 @@
 using namespace std;
 class Sprite
 {
+	//friend functions for collided, endvalue, and endgamevalue
 	friend int collided(int x, int y);
 	friend bool endValue(int x, int y);
 	friend bool endGameValue(int x, int y);
 public:
+	//setup for functions in sprite
 	Sprite();
 	~Sprite();
 	void InitSprites(int width, int height, int xInit, int yInit);
@@ -27,6 +30,7 @@ public:
 	bool jump;
 
 private:
+	//setup for private variables used in sprite
 	float x;
 	float y;
 	int curFrameLR, maxFrameLR;
