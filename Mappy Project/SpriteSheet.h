@@ -10,6 +10,7 @@ class Sprite
 {
 	friend int collided(int x, int y);
 	friend bool endValue(int x, int y);
+	friend bool endGameValue(int x, int y);
 public:
 	Sprite();
 	~Sprite();
@@ -22,6 +23,7 @@ public:
 	int getWidth() {return frameWidth;}
 	int getHeight() {return frameHeight;}
 	bool CollisionEndBlock();
+	bool GameEndBlock();
 	bool jump;
 
 private:

@@ -136,6 +136,14 @@ bool Sprite::CollisionEndBlock()
 		return false;
 }
 
+bool Sprite::GameEndBlock()
+{
+	if (endGameValue(x + frameWidth / 2, y + frameHeight + 5))
+		return true;
+	else
+		return false;
+}
+
 void Sprite::DrawSprites(int xoffset, int yoffset)
 {
 	int fx = (curFrame % animationColumns) * frameWidth;

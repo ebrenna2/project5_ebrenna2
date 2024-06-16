@@ -80,6 +80,15 @@ int main(void) {
                         }
                     }
 
+                    if (player.GameEndBlock())
+                    {
+                        al_clear_to_color(al_map_rgb(255, 255, 255));
+                        al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "You Win!");
+                        al_flip_display();
+                        al_rest(10);
+                        done = true;
+                    }
+
                 }
             }
             if (ev.timer.source == game_timer) {
@@ -89,7 +98,7 @@ int main(void) {
                     al_clear_to_color(al_map_rgb(0, 0, 0));
                     al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Game Over");
                     al_flip_display();
-                    al_rest(2.0);
+                    al_rest(10);
                     done = true;
                 }
             }
@@ -193,6 +202,19 @@ bool endValue(int x, int y)
     data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
 
     if (data->user1 == 10)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+bool endGameValue(int x, int y)
+{
+    BLKSTR* data;
+    data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
+
+    if (data->user1 == 11)
     {
         return true;
     }
