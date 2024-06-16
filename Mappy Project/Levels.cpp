@@ -5,7 +5,7 @@
 #include <cstdio>
 
 Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), gameOver(false) {
-	font = al_load_ttf_font("AppleGaramond.ttf", 36, 0);
+	font1 = al_load_ttf_font("AppleGaramond.ttf", 36, 0);
     timer = al_create_timer(1.0);
     event_queue = al_create_event_queue();
 
@@ -14,7 +14,7 @@ Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), ga
 }
 
 Levels::~Levels() {
-    al_destroy_font(font);
+    al_destroy_font(font1);
     al_destroy_timer(timer);
     al_destroy_event_queue(event_queue);
 }
@@ -77,8 +77,9 @@ void Levels::updateTimer() {
 void Levels::drawTimer(ALLEGRO_DISPLAY* display) {
     int remainingTime = getRemainingTime();
     char timeText[10];
+    char totalTimeText[20];
     sprintf(timeText, "Time: %d", remainingTime);
-    al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, timeText);
+    al_draw_text(font1, al_map_rgb(0, 0, 0), 0, 30, 0, timeText);
 }
 
 void Levels::events() {

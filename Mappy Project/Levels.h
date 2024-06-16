@@ -30,7 +30,7 @@ private:
 	int counter;
 	bool gameOver;
 	char levelName[20];
-	ALLEGRO_FONT* font;
+	ALLEGRO_FONT* font1;
 	ALLEGRO_TIMER* timer;
 	ALLEGRO_EVENT_QUEUE* event_queue;
 };

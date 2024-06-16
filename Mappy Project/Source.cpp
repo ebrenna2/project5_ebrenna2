@@ -33,7 +33,7 @@ int main(void) {
     al_init_ttf_addon();
 
     ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
-    ALLEGRO_FONT* font = al_load_ttf_font("AppleGaramond.ttf", 36, 0);
+    ALLEGRO_FONT* font = al_load_ttf_font("AppleGaramond.ttf", 24, 0);
 
     // Initialize levels
     Levels levels;
@@ -86,7 +86,7 @@ int main(void) {
                     if (player.GameEndBlock())
                     {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
-                        al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Yay! You Win!");
+                        al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Yay! You Win! Fishy made it!");
                         al_flip_display();
                         al_rest(10);
                         done = true;
@@ -155,7 +155,6 @@ int main(void) {
         }
         if (render && al_is_event_queue_empty(event_queue)) {
             render = false;
-            MapUpdateAnims();
             if (!levels.isGameOver()) {
                 xOff = player.getX() + player.getWidth() - WIDTH / 2;
                 yOff = player.getY() + player.getHeight() - HEIGHT / 2;
@@ -174,10 +173,11 @@ int main(void) {
                 player.DrawSprites(xOff, yOff);
 
                 levels.drawTimer(display);
+                al_draw_text(font, al_map_rgb(0, 0, 0), 0, 0, 0, "60 seconds per level");
             }
             else {
                 al_clear_to_color(al_map_rgb(0, 0, 0));
-                al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Game Over");
+                al_draw_text(font, al_map_rgb(255, 255, 255), 0, 2, ALLEGRO_ALIGN_LEFT, "Game Over");
             }
             al_flip_display();
         }
