@@ -53,10 +53,9 @@ int main(void) {
     al_start_timer(fps_timer);
     al_start_timer(game_timer);
 
-    player.InitSprites(WIDTH, HEIGHT, 3, 195);
+    player.InitSprites(WIDTH, HEIGHT, 0, 195);
 
     int xOff = 0, yOff = 0;
-
     // Game loop
     while (!done) {
         ALLEGRO_EVENT ev;

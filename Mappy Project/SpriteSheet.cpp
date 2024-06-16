@@ -19,7 +19,7 @@ void Sprite::InitSprites(int width, int height, int xInit, int yInit)
 	maxFrameUD = 4;
 	frameCount = 0;
 	frameDelay = 6;
-	frameWidth = 50;
+	frameWidth = 46;
 	frameHeight = 32;
 	animationColumns = 5;
 	animationDirection = 1;
