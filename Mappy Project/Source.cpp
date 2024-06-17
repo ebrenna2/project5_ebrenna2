@@ -222,7 +222,7 @@ int main(void) {
             else {
                 //otherwise (if user uses all the time), game is over and ends games
                 al_clear_to_color(al_map_rgb(0, 0, 0));
-                al_draw_text(font, al_map_rgb(255, 255, 255), 0, 2, ALLEGRO_ALIGN_LEFT, "Game Over");
+                al_draw_text(font, al_map_rgb(255, 255, 255), 0, 2, ALLEGRO_ALIGN_LEFT, "Time is up! Game Over");
             }
             //flip the display
             al_flip_display();
