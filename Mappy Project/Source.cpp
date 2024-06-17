@@ -119,7 +119,7 @@ int main(void) {
                 //if the player uses all their time for a given level, says it is game over
                 if (levels.isGameOver()) {
                     al_clear_to_color(al_map_rgb(0, 0, 0));
-                    al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Game Over");
+                    al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Time's up! Game Over");
                     al_flip_display();
                     al_rest(10);
                     done = true;
@@ -222,7 +222,7 @@ int main(void) {
             else {
                 //otherwise (if user uses all the time), game is over and ends games
                 al_clear_to_color(al_map_rgb(0, 0, 0));
-                al_draw_text(font, al_map_rgb(255, 255, 255), 0, 2, ALLEGRO_ALIGN_LEFT, "Time is up! Game Over");
+                al_draw_text(font, al_map_rgb(255, 255, 255), 0, 2, ALLEGRO_ALIGN_LEFT, "Game Over");
             }
             //flip the display
             al_flip_display();
