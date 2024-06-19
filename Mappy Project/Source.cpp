@@ -8,6 +8,8 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include "Levels.h"
+#include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_audio.h>
 using namespace std;
 //emma brennan
 //functions defs for colliding,  endvalue, and endgamevalue
@@ -35,11 +37,16 @@ int main(void) {
     al_init_primitives_addon();
     al_init_font_addon();
     al_init_ttf_addon();
+    al_install_audio();
+    al_init_acodec_addon();
 
+    ALLEGRO_SAMPLE* sample = NULL;
+    al_reserve_samples(4);
+    sample = al_load_sample("background_music.OGG");
     //create the display and allegro font
     ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
     ALLEGRO_FONT* font = al_load_ttf_font("AppleGaramond.ttf", 24, 0);
-
+    al_play_sample(sample, 0.25, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
     // Initialize levels - num 1 first, 3 total
     Levels levels;
     levels.init(1, 3, WIDTH, HEIGHT);
