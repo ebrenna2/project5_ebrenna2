@@ -44,13 +44,17 @@ int main(void) {
     ALLEGRO_SAMPLE* sample = NULL;
     al_reserve_samples(4);
     sample = al_load_sample("background_music.OGG");
+   
     //create the display and allegro font
+    ALLEGRO_SAMPLE* chomp = NULL;
+    chomp = al_load_sample("chomp.OGG");
     ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
     ALLEGRO_FONT* font = al_load_ttf_font("AppleGaramond.ttf", 24, 0);
     al_play_sample(sample, 0.25, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
     // Initialize levels - num 1 first, 3 total
     Levels levels;
     levels.init(1, 3, WIDTH, HEIGHT);
+
 
     // Initialize timers and event queue - oen timer for fps and one for the game
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
@@ -100,7 +104,11 @@ int main(void) {
                     //render
                     render = true;
 
-                    //check if the player reached the collision block for the next level, if so load the next level - done with that level
+                    if (player.sharkCollision())
+                    {
+                        al_play_sample(chomp, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                    }
+
                     if (player.CollisionEndBlock())
                     {
                         if (!levels.loadNextLevel(player)) {
@@ -117,7 +125,6 @@ int main(void) {
                         al_rest(10);
                         done = true;
                     }
-
                 }
             }
             //deals with the game timer
@@ -201,6 +208,7 @@ int main(void) {
         if (render && al_is_event_queue_empty(event_queue)) {
             //render set to false
             render = false;
+            MapUpdateAnims();
             //deals with when game isnt over
             if (!levels.isGameOver()) {
                 //scrolling and following player
@@ -252,6 +260,8 @@ int collided(int x, int y)
     BLKSTR* blockdata;
     blockdata = MapGetBlock(x / mapblockwidth, y / mapblockheight);
     return blockdata->tl;
+
+
 }
 
 //check for when the user gets to the end of the level and touches the top of the endlevel block, user1 -> 10 for that
@@ -285,8 +295,7 @@ bool endGameValue(int x, int y)
 bool sharkBlock(int x, int y)
 {
     BLKSTR* data;
-    data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
-
+    data = MapGetBlock(x /mapblockwidth, y / mapblockheight);
     if (data->user1 == 12)
     {
         return true;

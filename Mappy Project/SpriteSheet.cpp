@@ -1,4 +1,5 @@
 #include "SpriteSheet.h"
+ALLEGRO_SAMPLE* chomp = NULL;
 //emma brennan
 //setup - image is null
 Sprite::Sprite()
@@ -139,6 +140,7 @@ void Sprite::UpdateSprites(int width, int height, int dir)
         x = oldx;
         y = oldy;
     }
+
 }
 
 //gets the value for the collision end block (for the next level), checks if sprite is there
@@ -152,10 +154,13 @@ bool Sprite::CollisionEndBlock()
 
 bool Sprite::sharkCollision()
 {
-	if (sharkBlock(x + frameWidth/2, y + frameHeight + 5))
-		return true;
-	else
-		return false;
+
+	bool topLeft = sharkBlock(x, y);
+	bool topRight = sharkBlock(x + frameWidth, y);
+	bool bottomLeft = sharkBlock(x, y + frameHeight);
+	bool bottomRight = sharkBlock(x + frameWidth, y + frameHeight);
+	bool center = sharkBlock(x + frameWidth / 2, y + frameHeight / 2);
+	return topLeft || topRight || bottomLeft || bottomRight || center;
 }
 
 //gets the value for the game end block (for the game ending), checks if sprite is there

@@ -5,6 +5,8 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <iostream>
+#include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_audio.h>
 //emma brennan
 using namespace std;
 class Sprite
