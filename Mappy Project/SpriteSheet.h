@@ -13,6 +13,7 @@ class Sprite
 	friend int collided(int x, int y);
 	friend bool endValue(int x, int y);
 	friend bool endGameValue(int x, int y);
+	friend bool sharkBlock(int x, int y);
 public:
 	//setup for functions in sprite
 	Sprite();
@@ -27,6 +28,7 @@ public:
 	int getHeight() {return frameHeight;}
 	bool CollisionEndBlock();
 	bool GameEndBlock();
+	bool sharkCollision();
 	bool jump;
 
 private:

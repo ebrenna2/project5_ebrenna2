@@ -16,6 +16,7 @@ using namespace std;
 int collided(int x, int y); 
 bool endValue(int x, int y);
 bool endGameValue(int x, int y);
+bool sharkBlock(int x, int y);
 
 int main(void) {
     //initialize width and height, the keys
@@ -274,6 +275,19 @@ bool endGameValue(int x, int y)
     data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
 
     if (data->user1 == 11)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+bool sharkBlock(int x, int y)
+{
+    BLKSTR* data;
+    data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
+
+    if (data->user1 == 12)
     {
         return true;
     }

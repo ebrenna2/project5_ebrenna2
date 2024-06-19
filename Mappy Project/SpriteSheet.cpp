@@ -150,6 +150,14 @@ bool Sprite::CollisionEndBlock()
 		return false;
 }
 
+bool Sprite::sharkCollision()
+{
+	if (sharkBlock(x + frameWidth/2, y + frameHeight + 5))
+		return true;
+	else
+		return false;
+}
+
 //gets the value for the game end block (for the game ending), checks if sprite is there
 bool Sprite::GameEndBlock()
 {
