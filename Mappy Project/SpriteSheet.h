@@ -46,6 +46,7 @@ private:
 	int animationColumns;
 	int animationRows;
 	int animationDirection;
+	float sharkCooldown;
 
 	ALLEGRO_BITMAP *image;
 };

@@ -48,6 +48,9 @@ int main(void) {
     //create the display and allegro font
     ALLEGRO_SAMPLE* chomp = NULL;
     chomp = al_load_sample("chomp.OGG");
+
+    ALLEGRO_SAMPLE* oof = NULL;
+    oof = al_load_sample("oof.OGG");
     ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
     ALLEGRO_FONT* font = al_load_ttf_font("AppleGaramond.ttf", 24, 0);
     al_play_sample(sample, 0.25, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
@@ -107,6 +110,8 @@ int main(void) {
                     if (player.sharkCollision())
                     {
                         al_play_sample(chomp, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                        al_play_sample(oof, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                        levels.decrementLives();
                     }
 
                     if (player.CollisionEndBlock())
@@ -229,7 +234,7 @@ int main(void) {
 
                 //draw sprite
                 player.DrawSprites(xOff, yOff);
-
+                 levels.drawHealthBar();
                 //draw the timer to the display
                 levels.drawTimer(display);
                 //draw that user has 60 seconds per level

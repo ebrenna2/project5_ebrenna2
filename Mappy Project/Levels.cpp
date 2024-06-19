@@ -7,7 +7,8 @@
 #include <cstdio>
 
 //set up levels, currentlevel, total levels ,tiem limit, counter, gameover check
-Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), gameOver(false) {
+Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), gameOver(false), playerLives(3) {
+    heartImage = al_load_bitmap("heart.png");
     //load the font
 	font1 = al_load_ttf_font("AppleGaramond.ttf", 36, 0);
     //make the timer (tick 1 second)
@@ -117,5 +118,18 @@ void Levels::events() {
         {
             updateTimer();
         }
+    }
+}
+
+void Levels::drawHealthBar() {
+    for (int i = 0; i < playerLives; i++) {
+        al_draw_bitmap(heartImage, 35 * i, 450, 0);
+    }
+}
+
+void Levels::decrementLives() {
+    playerLives--;
+    if (playerLives <= 0) {
+        gameOver = true;
     }
 }

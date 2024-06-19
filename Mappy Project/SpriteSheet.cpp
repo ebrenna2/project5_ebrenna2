@@ -141,6 +141,11 @@ void Sprite::UpdateSprites(int width, int height, int dir)
         y = oldy;
     }
 
+	if (sharkCooldown > 0)
+	{
+		sharkCooldown--;
+	}
+
 }
 
 //gets the value for the collision end block (for the next level), checks if sprite is there
@@ -160,7 +165,11 @@ bool Sprite::sharkCollision()
 	bool bottomLeft = sharkBlock(x, y + frameHeight);
 	bool bottomRight = sharkBlock(x + frameWidth, y + frameHeight);
 	bool center = sharkBlock(x + frameWidth / 2, y + frameHeight / 2);
-	return topLeft || topRight || bottomLeft || bottomRight || center;
+	if ((topLeft || topRight || bottomLeft || bottomRight || center) && sharkCooldown <= 0) {
+		sharkCooldown = 60;
+		return true;
+	}
+	return false;
 }
 
 //gets the value for the game end block (for the game ending), checks if sprite is there
