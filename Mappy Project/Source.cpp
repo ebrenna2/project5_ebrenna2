@@ -308,3 +308,17 @@ bool sharkBlock(int x, int y)
     else
         return false;
 }
+
+bool boostBlock(int x, int y)
+{
+    BLKSTR* data;
+    data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
+    if (data->user1 == 14 && data->user2 == 0)
+    {
+        levels.incrementLives();
+        data->user2 = 1;
+        return true;
+    }
+    else
+        return false;
+}

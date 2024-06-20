@@ -16,6 +16,7 @@ class Sprite
 	friend bool endValue(int x, int y);
 	friend bool endGameValue(int x, int y);
 	friend bool sharkBlock(int x, int y);
+	friend bool boostBlock(int x, int y);
 public:
 	//setup for functions in sprite
 	Sprite();
@@ -31,6 +32,7 @@ public:
 	bool CollisionEndBlock();
 	bool GameEndBlock();
 	bool sharkCollision();
+	bool checkAndProcessBoostBlock();
 	bool jump;
 
 private:

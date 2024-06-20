@@ -181,6 +181,18 @@ bool Sprite::GameEndBlock()
 		return false;
 }
 
+bool Sprite::checkAndProcessBoostBlock() {
+	bool topLeft = boostBlock(x, y);
+	bool topRight = boostBlock(x + frameWidth, y);
+	bool bottomLeft = boostBlock(x, y + frameHeight);
+	bool bottomRight = boostBlock(x + frameWidth, y + frameHeight);
+	bool center = boostBlock(x + frameWidth / 2, y + frameHeight / 2);
+	if (topLeft || topRight || bottomLeft || bottomRight || center) {
+		return true;
+	}
+	return false;
+}
+
 //draws the sprite to the screen based on the direction
 void Sprite::DrawSprites(int xoffset, int yoffset)
 {

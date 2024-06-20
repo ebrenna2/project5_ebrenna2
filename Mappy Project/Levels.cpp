@@ -7,7 +7,7 @@
 #include <cstdio>
 
 //set up levels, currentlevel, total levels ,tiem limit, counter, gameover check
-Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), gameOver(false), playerLives(3) {
+Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), gameOver(false), playerLives(5) {
     heartImage = al_load_bitmap("heart.png");
     //load the font
 	font1 = al_load_ttf_font("AppleGaramond.ttf", 36, 0);
@@ -133,3 +133,10 @@ void Levels::decrementLives() {
         gameOver = true;
     }
 }
+
+void Levels::incrementLives() {
+    if (playerLives < MAX_LIVES) {
+        playerLives++;
+    }
+}
+

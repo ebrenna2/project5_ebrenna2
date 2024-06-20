@@ -35,6 +35,7 @@ public:
 	void events();
 	void drawHealthBar();
 	void decrementLives();
+	void incrementLives();
 
 	//private variables for the level class
 private:
@@ -51,5 +52,6 @@ private:
 	ALLEGRO_TIMER* timer;
 	ALLEGRO_EVENT_QUEUE* event_queue;
 	ALLEGRO_BITMAP* heartImage;
+	int MAX_LIVES = 5;
 };
 
