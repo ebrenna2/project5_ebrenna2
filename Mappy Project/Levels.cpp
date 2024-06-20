@@ -140,3 +140,8 @@ void Levels::incrementLives() {
     }
 }
 
+int Levels::getPlayerLives() const {
+    return playerLives;
+}
+
+

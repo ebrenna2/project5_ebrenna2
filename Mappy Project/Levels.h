@@ -5,6 +5,8 @@
 #include "mappy_A5.h"
 #include "SpriteSheet.h"
 #include <allegro5/allegro_font.h>
+#define MAX_LIVES 5
+
 //levels class declaration
 class Levels {
 public:
@@ -36,6 +38,7 @@ public:
 	void drawHealthBar();
 	void decrementLives();
 	void incrementLives();
+	int getPlayerLives() const;
 
 	//private variables for the level class
 private:
@@ -52,6 +55,6 @@ private:
 	ALLEGRO_TIMER* timer;
 	ALLEGRO_EVENT_QUEUE* event_queue;
 	ALLEGRO_BITMAP* heartImage;
-	int MAX_LIVES = 5;
+
 };
 

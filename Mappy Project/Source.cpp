@@ -58,7 +58,6 @@ int main(void) {
     Levels levels;
     levels.init(1, 3, WIDTH, HEIGHT);
 
-
     // Initialize timers and event queue - oen timer for fps and one for the game
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     ALLEGRO_TIMER* fps_timer = al_create_timer(1.0 / 60);
@@ -113,7 +112,12 @@ int main(void) {
                         al_play_sample(oof, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         levels.decrementLives();
                     }
-
+                    
+                    if (player.checkAndProcessBoostBlock()) {
+                        if (levels.getPlayerLives() < MAX_LIVES) {
+                            levels.incrementLives();
+                        }
+                    }
                     if (player.CollisionEndBlock())
                     {
                         if (!levels.loadNextLevel(player)) {
@@ -315,10 +319,8 @@ bool boostBlock(int x, int y)
     data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
     if (data->user1 == 14 && data->user2 == 0)
     {
-        levels.incrementLives();
         data->user2 = 1;
         return true;
     }
-    else
-        return false;
+    return false;
 }

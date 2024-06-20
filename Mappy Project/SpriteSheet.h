@@ -7,6 +7,7 @@
 #include <iostream>
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_audio.h>
+
 //emma brennan
 using namespace std;
 class Sprite
@@ -33,6 +34,7 @@ public:
 	bool GameEndBlock();
 	bool sharkCollision();
 	bool checkAndProcessBoostBlock();
+	bool onBoostBlock = false;
 	bool jump;
 
 private:
