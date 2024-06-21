@@ -9,7 +9,7 @@
 Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), gameOver(false), playerLives(5) {
     heartImage = al_load_bitmap("heart.png");
     //load the font
-	font1 = al_load_ttf_font("AppleGaramond.ttf", 36, 0);
+	font1 = al_load_ttf_font("AppleGaramond.ttf", 24, 0);
     //make the timer (tick 1 second)
     timer = al_create_timer(1.0);
     //make the event queue
@@ -105,7 +105,7 @@ void Levels::drawTimer(ALLEGRO_DISPLAY* display) {
     int remainingTime = getRemainingTime();
     char timeText[10];
     sprintf(timeText, "Time: %d", remainingTime);
-    al_draw_text(font1, al_map_rgb(0, 0, 0), 0, 30, 0, timeText);
+    al_draw_text(font1, al_map_rgb(0, 0, 0), 0, 0, 0, timeText);
 }
 
 //deals with the level events, while theres a next event, deals with the allegro timer and updates it

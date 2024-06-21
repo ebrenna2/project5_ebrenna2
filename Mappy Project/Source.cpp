@@ -67,16 +67,13 @@ int main(void) {
     // Initialize timers and event queue - oen timer for fps and one for the game
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     ALLEGRO_TIMER* fps_timer = al_create_timer(1.0 / 60);
-    ALLEGRO_TIMER* game_timer = al_create_timer(1.0);
-
+   
     // Register event sources, fps timer and game timer, and keyboard
     al_register_event_source(event_queue, al_get_timer_event_source(fps_timer));
-    al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
     // Start timers
     al_start_timer(fps_timer);
-    al_start_timer(game_timer);
 
     //initialize the sprite and its x and y position
     player.InitSprites(WIDTH, HEIGHT, 0, 195);
@@ -101,6 +98,9 @@ int main(void) {
     al_destroy_bitmap(welcome_img);
     al_destroy_event_queue(welcome_queue);
 
+    ALLEGRO_TIMER* game_timer = al_create_timer(1.0);
+    al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
+    al_start_timer(game_timer);
 
     // Game loop
     while (!done) {
@@ -268,8 +268,6 @@ int main(void) {
                 levels.drawHealthBar();
                 //draw the timer to the display
                 levels.drawTimer(display);
-                //draw that user has 60 seconds per level
-                al_draw_text(font, al_map_rgb(0, 0, 0), 0, 0, 0, "60 seconds per level");
             }
             else {
                 //otherwise (if user uses all the time), game is over and ends games
