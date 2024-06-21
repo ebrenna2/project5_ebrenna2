@@ -171,7 +171,7 @@ int Levels::getPlayerLives() const {
 
 void Levels::displayStats(ALLEGRO_FONT* font, int width, int height) {
     char stats[100];
-    sprintf(stats, "Hearts Left: %d\nCoins Collected: %d\nSharks Encountered: %d", playerLives, coinsCollected, sharkEncounters);
+    sprintf(stats, "Hearts Left: %d\nCoins Collected: %d\nSharks Encountered (bit you): %d", playerLives, coinsCollected, sharkEncounters);
     al_clear_to_color(al_map_rgb(0, 0, 0));
     al_draw_text(font, al_map_rgb(255, 255, 255), width / 2, height / 2 - 50, ALLEGRO_ALIGN_CENTER, "Congratulations! You Won! Fishy made it safely.");
     al_draw_multiline_text(font, al_map_rgb(255, 255, 255), width / 2, height / 2 - 10, width - 40, 20, ALLEGRO_ALIGN_CENTER, stats);

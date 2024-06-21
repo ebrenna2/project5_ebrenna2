@@ -42,12 +42,16 @@ int main(void) {
     al_init_acodec_addon();
 
     ALLEGRO_SAMPLE* sample = NULL;
-    al_reserve_samples(6);
-    sample = al_load_sample("background_music.OGG");
+    al_reserve_samples(8);
+    sample = al_load_sample("wii.OGG");
    
     //create the display and allegro font
     ALLEGRO_SAMPLE* chomp = NULL;
     chomp = al_load_sample("chomp.OGG");
+    ALLEGRO_SAMPLE* yay = NULL;
+    yay = al_load_sample("yay.OGG"); 
+    ALLEGRO_SAMPLE* womp = NULL;
+    womp = al_load_sample("womp.OGG");
 
     ALLEGRO_SAMPLE* oof = NULL;
     oof = al_load_sample("oof.OGG"); 
@@ -137,6 +141,7 @@ int main(void) {
                         al_play_sample(oof, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         levels.decrementLives();
                         if (levels.getPlayerLives() <= 0) {
+                            al_play_sample(womp, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                             levels.displayGameOver(font, WIDTH, HEIGHT);
                             done = true;
                         }
@@ -144,7 +149,7 @@ int main(void) {
                     
                     if (player.block1() || player.block2() || player.block3()) {
                         if (levels.getPlayerLives() < MAX_LIVES) {
-                            al_play_sample(boost, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                            al_play_sample(boost, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                             levels.incrementLives();
                             levels.collectCoin();
                         }
@@ -160,6 +165,7 @@ int main(void) {
                     //if the player reached the end game block, put a gameover screen, say player, flip display, rest, then game ends
                     if (player.GameEndBlock())
                     {
+                        al_play_sample(yay, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         levels.displayStats(font, WIDTH, HEIGHT);
                         al_flip_display();
                         al_rest(10);
@@ -173,6 +179,7 @@ int main(void) {
                 levels.updateTimer();
                 //if the player uses all their time for a given level, says it is game over
                 if (levels.isGameOver()) {
+                    al_play_sample(womp, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                     al_clear_to_color(al_map_rgb(0, 0, 0));
                     al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Time's up! Game Over. Try again!");
                     al_flip_display();
@@ -272,11 +279,6 @@ int main(void) {
                 levels.drawHealthBar();
                 //draw the timer to the display
                 levels.drawTimer(display);
-            }
-            else {
-                //otherwise (if user uses all the time), game is over and ends games
-                al_clear_to_color(al_map_rgb(0, 0, 0));
-                al_draw_text(font, al_map_rgb(255, 255, 255), 0, 2, ALLEGRO_ALIGN_LEFT, "Game Over");
             }
             //flip the display
             al_flip_display();
