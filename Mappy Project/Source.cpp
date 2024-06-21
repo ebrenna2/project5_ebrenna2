@@ -42,7 +42,7 @@ int main(void) {
     al_init_acodec_addon();
 
     ALLEGRO_SAMPLE* sample = NULL;
-    al_reserve_samples(4);
+    al_reserve_samples(6);
     sample = al_load_sample("background_music.OGG");
    
     //create the display and allegro font
@@ -50,7 +50,11 @@ int main(void) {
     chomp = al_load_sample("chomp.OGG");
 
     ALLEGRO_SAMPLE* oof = NULL;
-    oof = al_load_sample("oof.OGG");
+    oof = al_load_sample("oof.OGG"); 
+    ALLEGRO_SAMPLE* level = NULL;
+    level = al_load_sample("level.OGG"); 
+    ALLEGRO_SAMPLE* boost = NULL;
+    boost = al_load_sample("boost.OGG");
     ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
     ALLEGRO_FONT* font = al_load_ttf_font("AppleGaramond.ttf", 24, 0);
     al_play_sample(sample, 0.25, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
@@ -115,11 +119,13 @@ int main(void) {
                     
                     if (player.checkAndProcessBoostBlock()) {
                         if (levels.getPlayerLives() < MAX_LIVES) {
+                            al_play_sample(boost, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                             levels.incrementLives();
                         }
                     }
                     if (player.CollisionEndBlock())
                     {
+                        al_play_sample(level, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         if (!levels.loadNextLevel(player)) {
                             done = true;
                         }
@@ -238,7 +244,7 @@ int main(void) {
 
                 //draw sprite
                 player.DrawSprites(xOff, yOff);
-                 levels.drawHealthBar();
+                levels.drawHealthBar();
                 //draw the timer to the display
                 levels.drawTimer(display);
                 //draw that user has 60 seconds per level

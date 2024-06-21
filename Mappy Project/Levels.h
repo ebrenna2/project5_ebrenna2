@@ -50,6 +50,9 @@ private:
 	int timeLimit;
 	int counter;
 	bool gameOver;
+	float rotationAngle;
+	float pulseScale;
+	bool pulsing;
 	char levelName[20];
 	ALLEGRO_FONT* font1;
 	ALLEGRO_TIMER* timer;

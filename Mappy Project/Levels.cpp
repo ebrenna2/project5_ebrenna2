@@ -122,10 +122,33 @@ void Levels::events() {
 }
 
 void Levels::drawHealthBar() {
+    float cx = al_get_bitmap_width(heartImage) / 2;
+    float cy = al_get_bitmap_height(heartImage) / 2;
+
     for (int i = 0; i < playerLives; i++) {
-        al_draw_bitmap(heartImage, 35 * i, 450, 0);
+        float x = 35 * i + cx;
+        float y = 450 + cy;
+        float scale = 1.0f;
+        float rotation = 0.0f;
+
+        if (playerLives == 3) {
+            scale = 1.0f + 0.05f * sin(al_get_time() * 5);
+            rotation = 0.05f * sin(al_get_time() * 5);
+        }
+        else if (playerLives == 2) {
+            scale = 1.0f + 0.1f * sin(al_get_time() * 5);
+            rotation = 0.1f * sin(al_get_time() * 5);
+        }
+        else if (playerLives == 1) {
+            scale = 1.0f + 0.2f * sin(al_get_time() * 5);
+            rotation = 0.2f * sin(al_get_time() * 5);
+        }
+
+        al_draw_scaled_rotated_bitmap(heartImage, cx, cy, x, y, scale, scale, rotation, 0);
     }
 }
+
+
 
 void Levels::decrementLives() {
     playerLives--;
