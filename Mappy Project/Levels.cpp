@@ -23,8 +23,10 @@ Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), ga
 //deconstructor
 Levels::~Levels() {
     al_destroy_font(font1);
+    al_destroy_font(font2);
     al_destroy_timer(timer);
     al_destroy_event_queue(event_queue);
+    al_destroy_bitmap(heartImage);
 }
 
 //initialize everything (using this->, 
