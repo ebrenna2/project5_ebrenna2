@@ -6,7 +6,7 @@
 #include <allegro5/allegro_font.h>
 #include <cstdio>
 //set up levels, currentlevel, total levels ,tiem limit, counter, gameover check
-Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), gameOver(false), playerLives(5) {
+Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), gameOver(false), playerLives(5), coinsCollected(0), sharkEncounters(0) {
     heartImage = al_load_bitmap("heart.png");
     //load the font
 	font1 = al_load_ttf_font("AppleGaramond.ttf", 24, 0);
@@ -148,6 +148,7 @@ void Levels::drawHealthBar() {
 }
 
 void Levels::decrementLives() {
+    sharkEncounters++;
     playerLives--;
     if (playerLives <= 0) {
         gameOver = true;
@@ -160,10 +161,29 @@ void Levels::incrementLives() {
     }
 }
 
+void Levels::collectCoin() {
+    coinsCollected++;
+}
+
 int Levels::getPlayerLives() const {
     return playerLives;
 }
 
+void Levels::displayStats(ALLEGRO_FONT* font, int width, int height) {
+    char stats[100];
+    sprintf(stats, "Hearts Left: %d\nCoins Collected: %d\nSharks Encountered: %d", playerLives, coinsCollected, sharkEncounters);
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+    al_draw_text(font, al_map_rgb(255, 255, 255), width / 2, height / 2 - 50, ALLEGRO_ALIGN_CENTER, "Congratulations! You Won! Fishy made it safely.");
+    al_draw_multiline_text(font, al_map_rgb(255, 255, 255), width / 2, height / 2 - 10, width - 40, 20, ALLEGRO_ALIGN_CENTER, stats);
+    al_flip_display();
+}
+
+void Levels::displayGameOver(ALLEGRO_FONT* font, int width, int height) {
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+    al_draw_text(font, al_map_rgb(255, 255, 255), width / 2, height / 2, ALLEGRO_ALIGN_CENTER, "You died! Game Over. Try again!");
+    al_flip_display();
+    al_rest(10);
+}
 
 
 

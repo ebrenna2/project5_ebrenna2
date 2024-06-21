@@ -167,7 +167,7 @@ bool Sprite::sharkCollision()
 	bool bottomRight = sharkBlock(x + frameWidth, y + frameHeight);
 	bool center = sharkBlock(x + frameWidth / 2, y + frameHeight / 2);
 	if ((topLeft || topRight || bottomLeft || bottomRight || center) && sharkCooldown <= 0) {
-		sharkCooldown = 60;
+		sharkCooldown = 100;
 		return true;
 	}
 	return false;

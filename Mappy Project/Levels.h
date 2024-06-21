@@ -39,6 +39,9 @@ public:
 	void decrementLives();
 	void incrementLives();
 	int getPlayerLives() const;
+	void collectCoin();
+	void displayStats(ALLEGRO_FONT* font, int width, int height);
+	void displayGameOver(ALLEGRO_FONT* font, int width, int height);
 
 	//private variables for the level class
 private:
@@ -54,6 +57,8 @@ private:
 	float pulseScale;
 	bool pulsing;
 	char levelName[20];
+	int coinsCollected;
+	int sharkEncounters;
 	ALLEGRO_FONT* font1;
 	ALLEGRO_TIMER* timer;
 	ALLEGRO_EVENT_QUEUE* event_queue;

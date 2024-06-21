@@ -136,12 +136,17 @@ int main(void) {
                         al_play_sample(chomp, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         al_play_sample(oof, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         levels.decrementLives();
+                        if (levels.getPlayerLives() <= 0) {
+                            levels.displayGameOver(font, WIDTH, HEIGHT);
+                            done = true;
+                        }
                     }
                     
                     if (player.block1() || player.block2() || player.block3()) {
                         if (levels.getPlayerLives() < MAX_LIVES) {
                             al_play_sample(boost, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                             levels.incrementLives();
+                            levels.collectCoin();
                         }
                     }
                     if (player.CollisionEndBlock())
@@ -155,8 +160,7 @@ int main(void) {
                     //if the player reached the end game block, put a gameover screen, say player, flip display, rest, then game ends
                     if (player.GameEndBlock())
                     {
-                        al_clear_to_color(al_map_rgb(0, 0, 0));
-                        al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Yay! You Win! Fishy made it!");
+                        levels.displayStats(font, WIDTH, HEIGHT);
                         al_flip_display();
                         al_rest(10);
                         done = true;
@@ -170,7 +174,7 @@ int main(void) {
                 //if the player uses all their time for a given level, says it is game over
                 if (levels.isGameOver()) {
                     al_clear_to_color(al_map_rgb(0, 0, 0));
-                    al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Time's up! Game Over");
+                    al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Time's up! Game Over. Try again!");
                     al_flip_display();
                     al_rest(10);
                     done = true;
