@@ -52,7 +52,6 @@ bool Levels::loadNextLevel(Sprite &player) {
     sprintf(levelName, "rivermaze%d.fmp", currentLevel);
     //tries to load the map
     if (MapLoad(levelName, 1)) exit(-5);
-    resetBoostBlocks();
     //resets timer when a new map is loaded
     resetTimer();
     //initializes the sprite back onto the right part of the screen
@@ -148,8 +147,6 @@ void Levels::drawHealthBar() {
     }
 }
 
-
-
 void Levels::decrementLives() {
     playerLives--;
     if (playerLives <= 0) {
@@ -167,15 +164,6 @@ int Levels::getPlayerLives() const {
     return playerLives;
 }
 
-void Levels::resetBoostBlocks() {
-    for (int y = 0; y < mapheight; y++) {
-        for (int x = 0; x < mapwidth; x++) {
-            BLKSTR* blockdata = MapGetBlock(x, y);
-            if (blockdata->user1 == 14) {
-                blockdata->user2 = 0;
-            }
-        }
-    }
-}
+
 
 

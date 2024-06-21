@@ -138,7 +138,7 @@ int main(void) {
                         levels.decrementLives();
                     }
                     
-                    if (player.checkAndProcessBoostBlock()) {
+                    if (player.block1() || player.block2() || player.block3()) {
                         if (levels.getPlayerLives() < MAX_LIVES) {
                             al_play_sample(boost, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                             levels.incrementLives();
@@ -340,11 +340,35 @@ bool sharkBlock(int x, int y)
         return false;
 }
 
-bool boostBlock(int x, int y)
+bool boostBlock1(int x, int y)
 {
     BLKSTR* data;
     data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
     if (data->user1 == 14 && data->user2 == 0)
+    {
+        data->user2 = 1;
+        return true;
+    }
+    return false;
+}
+
+bool boostBlock2(int x, int y)
+{
+    BLKSTR* data;
+    data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
+    if (data->user1 == 15 && data->user2 == 0)
+    {
+        data->user2 = 1;
+        return true;
+    }
+    return false;
+}
+
+bool boostBlock3(int x, int y)
+{
+    BLKSTR* data;
+    data = MapGetBlock(x / mapblockwidth, y / mapblockheight);
+    if (data->user1 == 16 && data->user2 == 0)
     {
         data->user2 = 1;
         return true;

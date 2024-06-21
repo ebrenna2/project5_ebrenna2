@@ -146,12 +146,6 @@ void Sprite::UpdateSprites(int width, int height, int dir)
 		sharkCooldown--;
 	}
 
-	if (onBoostBlock && boostResetTimer > 0) {
-		boostResetTimer--;
-		if (boostResetTimer == 0) {
-			onBoostBlock = false;
-		}
-	}
 
 }
 
@@ -188,15 +182,39 @@ bool Sprite::GameEndBlock()
 		return false;
 }
 
-bool Sprite::checkAndProcessBoostBlock() {
-	if (!onBoostBlock && (
-		boostBlock(x, y) ||
-		boostBlock(x + frameWidth, y) ||
-		boostBlock(x, y + frameHeight) ||
-		boostBlock(x + frameWidth, y + frameHeight) ||
-		boostBlock(x + frameWidth / 2, y + frameHeight / 2))) {
-		onBoostBlock = true;
-		boostResetTimer = 300;
+bool Sprite::block1() {
+	if (!onBoostBlock1 && (
+		boostBlock1(x, y) ||
+		boostBlock1(x + frameWidth, y) ||
+		boostBlock1(x, y + frameHeight) ||
+		boostBlock1(x + frameWidth, y + frameHeight) ||
+		boostBlock1(x + frameWidth / 2, y + frameHeight / 2))) {
+		onBoostBlock1 = true;
+        return true;
+    }
+    return false;
+}
+
+bool Sprite::block2() {
+	if (!onBoostBlock2 && (
+		boostBlock2(x, y) ||
+		boostBlock2(x + frameWidth, y) ||
+		boostBlock2(x, y + frameHeight) ||
+		boostBlock2(x + frameWidth, y + frameHeight) ||
+		boostBlock2(x + frameWidth / 2, y + frameHeight / 2))) {
+		onBoostBlock2 = true;
+        return true;
+    }
+    return false;
+}
+bool Sprite::block3() {
+	if (!onBoostBlock3 && (
+		boostBlock3(x, y) ||
+		boostBlock3(x + frameWidth, y) ||
+		boostBlock3(x, y + frameHeight) ||
+		boostBlock3(x + frameWidth, y + frameHeight) ||
+		boostBlock3(x + frameWidth / 2, y + frameHeight / 2))) {
+		onBoostBlock3 = true;
         return true;
     }
     return false;
