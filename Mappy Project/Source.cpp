@@ -12,11 +12,14 @@
 #include <allegro5/allegro_audio.h>
 using namespace std;
 //emma brennan
-//functions defs for colliding,  endvalue, and endgamevalue
+//functions defs for colliding,  endvalue, endgamevalue, sharkblock, boostblocks 1, 2, and 3 for the 3 diff levels
 int collided(int x, int y); 
 bool endValue(int x, int y);
 bool endGameValue(int x, int y);
 bool sharkBlock(int x, int y);
+bool boostBlock1(int x, int y);
+bool boostBlock2(int x, int y);
+bool boostBlock3(int x, int y);
 
 int main(void) {
     //initialize width and height, the keys
@@ -25,11 +28,12 @@ int main(void) {
     bool keys[] = { false, false, false, false, false };
     enum KEYS { UP, DOWN, LEFT, RIGHT, SPACE };
 
+    //booleans for done and render
     bool done = false;
     bool render = false;
 
     Sprite player;
-    const int JUMPIT = 1600;
+
 
     // Initialize Allegro and its addons
     al_init();
@@ -41,31 +45,37 @@ int main(void) {
     al_install_audio();
     al_init_acodec_addon();
 
+    //make the audio - wii for background music
     ALLEGRO_SAMPLE* sample = NULL;
+    //reserve samples
     al_reserve_samples(8);
     sample = al_load_sample("wii.OGG");
    
-    //create the display and allegro font
+    //load all the other samples (theres a lot)
     ALLEGRO_SAMPLE* chomp = NULL;
     chomp = al_load_sample("chomp.OGG");
     ALLEGRO_SAMPLE* yay = NULL;
     yay = al_load_sample("yay.OGG"); 
     ALLEGRO_SAMPLE* womp = NULL;
     womp = al_load_sample("womp.OGG");
-
     ALLEGRO_SAMPLE* oof = NULL;
     oof = al_load_sample("oof.OGG"); 
     ALLEGRO_SAMPLE* level = NULL;
     level = al_load_sample("level.OGG"); 
     ALLEGRO_SAMPLE* boost = NULL;
     boost = al_load_sample("boost.OGG");
+    //create the display
     ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
+    //create the font
     ALLEGRO_FONT* font = al_load_ttf_font("Over.ttf", 60, 0);
-    al_play_sample(sample, 0.25, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
+    //play the background music on a loop
+    al_play_sample(sample, 0.5, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
+   
     // Initialize levels - num 1 first, 3 total
     Levels levels;
     levels.init(1, 3, WIDTH, HEIGHT);
 
+    //load the welcome image as a bitmap
     ALLEGRO_BITMAP* welcome_img = al_load_bitmap("welcome.png");
 
     // Initialize timers and event queue - oen timer for fps and one for the game
@@ -85,12 +95,17 @@ int main(void) {
     //variables for scrolling
     int xOff = 0, yOff = 0;
 
+    //clear screen to black
     al_clear_to_color(al_map_rgb(0, 0, 0));
+    //draw the welcome image to the screen
     al_draw_bitmap(welcome_img, 0, 0, 0);
+    //flip display
     al_flip_display();
+    //create event queue for the welcome queue and register event
     ALLEGRO_EVENT_QUEUE* welcome_queue = al_create_event_queue();
     al_register_event_source(welcome_queue, al_get_keyboard_event_source());
 
+    //show the welcome screen then wait for when the user presses enter to start the game
     while (true) {
         ALLEGRO_EVENT ev;
         al_wait_for_event(welcome_queue, &ev);
@@ -99,11 +114,15 @@ int main(void) {
         }
     }
 
+    //destroy the bitmap and event queue for the welcome image
     al_destroy_bitmap(welcome_img);
     al_destroy_event_queue(welcome_queue);
 
+    //create the game timer (sorry everything is all over the place)
     ALLEGRO_TIMER* game_timer = al_create_timer(1.0);
+    //register the game timer
     al_register_event_source(event_queue, al_get_timer_event_source(game_timer));
+    //start the game timer
     al_start_timer(game_timer);
 
     // Game loop
@@ -135,37 +154,55 @@ int main(void) {
                     //render
                     render = true;
 
+                    //if the player collides with the shark block
                     if (player.sharkCollision())
                     {
+                        //play the chomp  and oof noise
                         al_play_sample(chomp, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         al_play_sample(oof, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                        //decrement the player's lives
                         levels.decrementLives();
+                        //if their lives are less than or equal to 0
                         if (levels.getPlayerLives() <= 0) {
+                            //play womp womp noise
                             al_play_sample(womp, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                            //display the game over screen
                             levels.displayGameOver(font, WIDTH, HEIGHT);
+                            //done is equal to true
                             done = true;
                         }
                     }
                     
+                    //if the player collides with any of the booster blocks
                     if (player.block1() || player.block2() || player.block3()) {
+                        //check if player lives is less than max lives, which is 5
                         if (levels.getPlayerLives() < MAX_LIVES) {
+                            //play the boost noise
                             al_play_sample(boost, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                            //increment life (+ 1)
                             levels.incrementLives();
+                            //call collect coin for end of game stats
                             levels.collectCoin();
                         }
                     }
+
+                    //if collided with the end block on a level
                     if (player.CollisionEndBlock())
                     {
+                        //play the call of duty level up noise lol
                         al_play_sample(level, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                        //load next level
                         if (!levels.loadNextLevel(player)) {
                             done = true;
                         }
                     }
 
-                    //if the player reached the end game block, put a gameover screen, say player, flip display, rest, then game ends
+                    //if the player reached the end game block, put a gameover screen with stats, flip display, rest, then game ends
                     if (player.GameEndBlock())
                     {
+                        //play yayyyyyyy sound
                         al_play_sample(yay, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                        //display stats
                         levels.displayStats(font, WIDTH, HEIGHT);
                         al_flip_display();
                         al_rest(10);
@@ -179,8 +216,11 @@ int main(void) {
                 levels.updateTimer();
                 //if the player uses all their time for a given level, says it is game over
                 if (levels.isGameOver()) {
+                    //play womp womp
                     al_play_sample(womp, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                    //clear to black
                     al_clear_to_color(al_map_rgb(0, 0, 0));
+                    //draw game over on screen, flip display, rest, game ends
                     al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Time's up! Game Over. Try again!");
                     al_flip_display();
                     al_rest(10);
@@ -189,7 +229,7 @@ int main(void) {
             }
         }
 
-        //close display if user closes it
+        //close display 
         else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             done = true;
         }
@@ -336,6 +376,7 @@ bool endGameValue(int x, int y)
         return false;
 }
 
+//check for the shark block
 bool sharkBlock(int x, int y)
 {
     BLKSTR* data;
@@ -348,6 +389,7 @@ bool sharkBlock(int x, int y)
         return false;
 }
 
+//check for the first boost block, then disable (user2->1, when collided with)
 bool boostBlock1(int x, int y)
 {
     BLKSTR* data;
@@ -360,6 +402,7 @@ bool boostBlock1(int x, int y)
     return false;
 }
 
+//check for the second boost block, then disable (user2->1, when collided with)
 bool boostBlock2(int x, int y)
 {
     BLKSTR* data;
@@ -372,6 +415,7 @@ bool boostBlock2(int x, int y)
     return false;
 }
 
+//check for the third boost block, then disable (user2->1, when collided with)
 bool boostBlock3(int x, int y)
 {
     BLKSTR* data;

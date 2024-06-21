@@ -158,14 +158,17 @@ bool Sprite::CollisionEndBlock()
 		return false;
 }
 
+//check for shark collision 
 bool Sprite::sharkCollision()
 {
 
+	//check for all aroudn the sharkblock and check for cooldown, if collided with set cooldown to 100 so player doesnt instadie
 	bool topLeft = sharkBlock(x, y);
 	bool topRight = sharkBlock(x + frameWidth, y);
 	bool bottomLeft = sharkBlock(x, y + frameHeight);
 	bool bottomRight = sharkBlock(x + frameWidth, y + frameHeight);
 	bool center = sharkBlock(x + frameWidth / 2, y + frameHeight / 2);
+	//check for collisions
 	if ((topLeft || topRight || bottomLeft || bottomRight || center) && sharkCooldown <= 0) {
 		sharkCooldown = 100;
 		return true;
@@ -182,6 +185,7 @@ bool Sprite::GameEndBlock()
 		return false;
 }
 
+//check for if on boost block 1, use boolean and set onboostblock1 to true so user cant get another life
 bool Sprite::block1() {
 	if (!onBoostBlock1 && (
 		boostBlock1(x, y) ||
@@ -195,6 +199,7 @@ bool Sprite::block1() {
     return false;
 }
 
+//check for if on boost block 2, use boolean and set onboostblock2 to true so user cant get another life
 bool Sprite::block2() {
 	if (!onBoostBlock2 && (
 		boostBlock2(x, y) ||
@@ -207,6 +212,8 @@ bool Sprite::block2() {
     }
     return false;
 }
+
+//check for if on boost block 3, use boolean and set onboostblock3 to true so user cant get another life
 bool Sprite::block3() {
 	if (!onBoostBlock3 && (
 		boostBlock3(x, y) ||

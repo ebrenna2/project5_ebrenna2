@@ -5,10 +5,10 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_font.h>
 #include <cstdio>
-//set up levels, currentlevel, total levels ,tiem limit, counter, gameover check
+//set up levels, currentlevel, total levels ,time limit, counter, gameover check, initialize lives to 5, coins collected to 0, shark encounters to 0
 Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), gameOver(false), playerLives(5), coinsCollected(0), sharkEncounters(0) {
     heartImage = al_load_bitmap("heart.png");
-    //load the font
+    //load the fonts
 	font1 = al_load_ttf_font("Helvetica.ttf", 24, 0);
 	font2 = al_load_ttf_font("Over.ttf", 60, 0);
     //make the timer (tick 1 second)
@@ -17,6 +17,7 @@ Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), ga
     event_queue = al_create_event_queue();
     //start the timer and do the register event sources
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
+    //start timer
     al_start_timer(timer);
 }
 
@@ -123,68 +124,101 @@ void Levels::events() {
     }
 }
 
+//draws the hearts to the screen
 void Levels::drawHealthBar() {
+//heart centers
     float cx = al_get_bitmap_width(heartImage) / 2;
     float cy = al_get_bitmap_height(heartImage) / 2;
 
+    //for loop draws hearts for number of player lives
     for (int i = 0; i < playerLives; i++) {
+        //hearts x position
         float x = 35 * i + cx;
+        //heart y position
         float y = 450 + cy;
+        //scale and rotation
         float scale = 1.0f;
         float rotation = 0.0f;
 
+        //apply scaling and rotation effects based on the number of player lives
         if (playerLives == 3) {
+            //smallest scaling and rotation
             scale = 1.0f + 0.05f * sin(al_get_time() * 5);
             rotation = 0.05f * sin(al_get_time() * 5);
         }
+
+        //medium scale and rotation
         else if (playerLives == 2) {
             scale = 1.0f + 0.1f * sin(al_get_time() * 5);
             rotation = 0.1f * sin(al_get_time() * 5);
         }
+
+        //most scaling and rotating (big heartbeat)
         else if (playerLives == 1) {
             scale = 1.0f + 0.2f * sin(al_get_time() * 5);
             rotation = 0.2f * sin(al_get_time() * 5);
         }
 
+        //draw the scaled and rotated heart
         al_draw_scaled_rotated_bitmap(heartImage, cx, cy, x, y, scale, scale, rotation, 0);
     }
 }
 
+//decrement user lives
 void Levels::decrementLives() {
+    //increase shark encounter for end of game stats
     sharkEncounters++;
+    //decrement user lives
     playerLives--;
+    //if lives go to 0, end game
     if (playerLives <= 0) {
         gameOver = true;
     }
 }
 
+//increment user lives
 void Levels::incrementLives() {
+    //if user lives are less than max lives, increment life by 1
     if (playerLives < MAX_LIVES) {
         playerLives++;
     }
 }
 
+//collect coin, for end of game stats to show how many boosts they got
 void Levels::collectCoin() {
     coinsCollected++;
 }
 
+//get player lives, returns the player lives
 int Levels::getPlayerLives() const {
     return playerLives;
 }
 
-void Levels::displayStats(ALLEGRO_FONT* font, int width, int height) {
+//displays the stats for the end of the game
+void Levels::displayStats(ALLEGRO_FONT* font2, int width, int height) {
+    //for storing stats message
     char stats[100];
+    //formats stats message with heartsleft, foodcollected, sharksencountered
     sprintf(stats, "Hearts Left: %d\nFish food collected: %d\nSharks Encountered (bit you): %d", playerLives, coinsCollected, sharkEncounters);
+    //clear to black
     al_clear_to_color(al_map_rgb(0, 0, 0));
+    //draws the congrats text to the screen
     al_draw_text(font2, al_map_rgb(255, 255, 255), width / 2, height / 2 - 50, ALLEGRO_ALIGN_CENTER, "Congratulations! You Won! Fishy made it safely.");
+    //draws the stats in multilines with stats 
     al_draw_multiline_text(font2, al_map_rgb(255, 255, 255), width / 2, height / 2 - 10, width - 40, 20, ALLEGRO_ALIGN_CENTER, stats);
+    //flips the display
     al_flip_display();
 }
 
+//displays game over screen when user dies
 void Levels::displayGameOver(ALLEGRO_FONT* font, int width, int height) {
+    //clears to black
     al_clear_to_color(al_map_rgb(0, 0, 0));
+    //draws text that they died
     al_draw_text(font2, al_map_rgb(255, 255, 255), width / 2, height / 2, ALLEGRO_ALIGN_CENTER, "You died! Game over. Try again!");
+    //flip display
     al_flip_display();
+    //rest for 10 seconds
     al_rest(10);
 }
 

@@ -12,7 +12,7 @@
 using namespace std;
 class Sprite
 {
-	//friend functions for collided, endvalue, and endgamevalue
+	//friend functions for collided, endvalue, endgamevalue, sharkblock, boostblock1, 2, and 3
 	friend int collided(int x, int y);
 	friend bool endValue(int x, int y);
 	friend bool endGameValue(int x, int y);
@@ -21,7 +21,7 @@ class Sprite
 	friend bool boostBlock2(int x, int y);
 	friend bool boostBlock3(int x, int y);
 public:
-	//setup for functions in sprite
+	//setup for functions in sprite and booleans for public - all the sprite logic and block logic
 	Sprite();
 	~Sprite();
 	void InitSprites(int width, int height, int xInit, int yInit);
@@ -41,9 +41,7 @@ public:
 
 	bool onBoostBlock1 = false;
 	bool onBoostBlock2 = false;
-	bool onBoostBlock3= false;
-	bool jump;
-	int boostResetTimer;
+	bool onBoostBlock3 = false;
 
 private:
 	//setup for private variables used in sprite

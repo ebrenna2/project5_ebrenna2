@@ -35,11 +35,17 @@ public:
 	void drawTimer(ALLEGRO_DISPLAY* display);
 	//deals with allegro events
 	void events();
+	//draw health bar
 	void drawHealthBar();
+	//decrement lives
 	void decrementLives();
+	//increment lives
 	void incrementLives();
+	//get player lives
 	int getPlayerLives() const;
+	//collect coin
 	void collectCoin();
+	//end of game screens, depends on what happens in-game
 	void displayStats(ALLEGRO_FONT* font, int width, int height);
 	void displayGameOver(ALLEGRO_FONT* font, int width, int height);
 
