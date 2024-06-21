@@ -38,6 +38,7 @@ public:
 	void drawHealthBar();
 	void decrementLives();
 	void incrementLives();
+	void resetBoostBlocks();
 	int getPlayerLives() const;
 
 	//private variables for the level class

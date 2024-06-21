@@ -146,6 +146,13 @@ void Sprite::UpdateSprites(int width, int height, int dir)
 		sharkCooldown--;
 	}
 
+	if (onBoostBlock && boostResetTimer > 0) {
+		boostResetTimer--;
+		if (boostResetTimer == 0) {
+			onBoostBlock = false;
+		}
+	}
+
 }
 
 //gets the value for the collision end block (for the next level), checks if sprite is there
@@ -189,6 +196,7 @@ bool Sprite::checkAndProcessBoostBlock() {
 		boostBlock(x + frameWidth, y + frameHeight) ||
 		boostBlock(x + frameWidth / 2, y + frameHeight / 2))) {
 		onBoostBlock = true;
+		boostResetTimer = 300;
         return true;
     }
     return false;

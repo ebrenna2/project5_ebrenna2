@@ -36,6 +36,7 @@ public:
 	bool checkAndProcessBoostBlock();
 	bool onBoostBlock = false;
 	bool jump;
+	int boostResetTimer;
 
 private:
 	//setup for private variables used in sprite

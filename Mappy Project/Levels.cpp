@@ -5,7 +5,6 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_font.h>
 #include <cstdio>
-
 //set up levels, currentlevel, total levels ,tiem limit, counter, gameover check
 Levels::Levels() :currentLevel(1), totalLevels(3), timeLimit(60), counter(0), gameOver(false), playerLives(5) {
     heartImage = al_load_bitmap("heart.png");
@@ -53,6 +52,7 @@ bool Levels::loadNextLevel(Sprite &player) {
     sprintf(levelName, "rivermaze%d.fmp", currentLevel);
     //tries to load the map
     if (MapLoad(levelName, 1)) exit(-5);
+    resetBoostBlocks();
     //resets timer when a new map is loaded
     resetTimer();
     //initializes the sprite back onto the right part of the screen
@@ -165,6 +165,17 @@ void Levels::incrementLives() {
 
 int Levels::getPlayerLives() const {
     return playerLives;
+}
+
+void Levels::resetBoostBlocks() {
+    for (int y = 0; y < mapheight; y++) {
+        for (int x = 0; x < mapwidth; x++) {
+            BLKSTR* blockdata = MapGetBlock(x, y);
+            if (blockdata->user1 == 14) {
+                blockdata->user2 = 0;
+            }
+        }
+    }
 }
 
 
