@@ -62,6 +62,8 @@ int main(void) {
     Levels levels;
     levels.init(1, 3, WIDTH, HEIGHT);
 
+    ALLEGRO_BITMAP* welcome_img = al_load_bitmap("welcome.png");
+
     // Initialize timers and event queue - oen timer for fps and one for the game
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     ALLEGRO_TIMER* fps_timer = al_create_timer(1.0 / 60);
@@ -81,6 +83,25 @@ int main(void) {
 
     //variables for scrolling
     int xOff = 0, yOff = 0;
+
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+    al_draw_bitmap(welcome_img, 0, 0, 0);
+    al_flip_display();
+    ALLEGRO_EVENT_QUEUE* welcome_queue = al_create_event_queue();
+    al_register_event_source(welcome_queue, al_get_keyboard_event_source());
+
+    while (true) {
+        ALLEGRO_EVENT ev;
+        al_wait_for_event(welcome_queue, &ev);
+        if (ev.type == ALLEGRO_EVENT_KEY_DOWN && ev.keyboard.keycode == ALLEGRO_KEY_ENTER) {
+            break;
+        }
+    }
+
+    al_destroy_bitmap(welcome_img);
+    al_destroy_event_queue(welcome_queue);
+
+
     // Game loop
     while (!done) {
         //wait for allegro event
