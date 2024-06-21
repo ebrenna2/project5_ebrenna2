@@ -60,6 +60,7 @@ private:
 	int coinsCollected;
 	int sharkEncounters;
 	ALLEGRO_FONT* font1;
+	ALLEGRO_FONT* font2;
 	ALLEGRO_TIMER* timer;
 	ALLEGRO_EVENT_QUEUE* event_queue;
 	ALLEGRO_BITMAP* heartImage;

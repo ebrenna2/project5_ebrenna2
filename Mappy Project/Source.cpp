@@ -60,7 +60,7 @@ int main(void) {
     ALLEGRO_SAMPLE* boost = NULL;
     boost = al_load_sample("boost.OGG");
     ALLEGRO_DISPLAY* display = al_create_display(WIDTH, HEIGHT);
-    ALLEGRO_FONT* font = al_load_ttf_font("AppleGaramond.ttf", 24, 0);
+    ALLEGRO_FONT* font = al_load_ttf_font("Over.ttf", 60, 0);
     al_play_sample(sample, 0.25, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
     // Initialize levels - num 1 first, 3 total
     Levels levels;
@@ -137,11 +137,11 @@ int main(void) {
 
                     if (player.sharkCollision())
                     {
-                        al_play_sample(chomp, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
-                        al_play_sample(oof, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                        al_play_sample(chomp, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                        al_play_sample(oof, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         levels.decrementLives();
                         if (levels.getPlayerLives() <= 0) {
-                            al_play_sample(womp, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                            al_play_sample(womp, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                             levels.displayGameOver(font, WIDTH, HEIGHT);
                             done = true;
                         }
@@ -149,14 +149,14 @@ int main(void) {
                     
                     if (player.block1() || player.block2() || player.block3()) {
                         if (levels.getPlayerLives() < MAX_LIVES) {
-                            al_play_sample(boost, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                            al_play_sample(boost, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                             levels.incrementLives();
                             levels.collectCoin();
                         }
                     }
                     if (player.CollisionEndBlock())
                     {
-                        al_play_sample(level, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                        al_play_sample(level, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         if (!levels.loadNextLevel(player)) {
                             done = true;
                         }
@@ -165,7 +165,7 @@ int main(void) {
                     //if the player reached the end game block, put a gameover screen, say player, flip display, rest, then game ends
                     if (player.GameEndBlock())
                     {
-                        al_play_sample(yay, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                        al_play_sample(yay, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                         levels.displayStats(font, WIDTH, HEIGHT);
                         al_flip_display();
                         al_rest(10);
@@ -179,7 +179,7 @@ int main(void) {
                 levels.updateTimer();
                 //if the player uses all their time for a given level, says it is game over
                 if (levels.isGameOver()) {
-                    al_play_sample(womp, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+                    al_play_sample(womp, 0.25, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
                     al_clear_to_color(al_map_rgb(0, 0, 0));
                     al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Time's up! Game Over. Try again!");
                     al_flip_display();
@@ -288,9 +288,15 @@ int main(void) {
 
     // Cleanup
     al_destroy_event_queue(event_queue);
+    al_destroy_event_queue(welcome_queue);
     al_destroy_display(display);
     al_destroy_timer(fps_timer);
     al_destroy_timer(game_timer);
+    al_destroy_sample(yay);
+    al_destroy_sample(womp);
+    al_destroy_sample(sample);
+    al_destroy_sample(oof);
+    al_destroy_bitmap(welcome_img);
     return 0;
 }
 
