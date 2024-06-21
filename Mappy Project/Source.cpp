@@ -288,7 +288,6 @@ int main(void) {
 
     // Cleanup
     al_destroy_event_queue(event_queue);
-    al_destroy_event_queue(welcome_queue);
     al_destroy_display(display);
     al_destroy_timer(fps_timer);
     al_destroy_timer(game_timer);
@@ -296,7 +295,6 @@ int main(void) {
     al_destroy_sample(womp);
     al_destroy_sample(sample);
     al_destroy_sample(oof);
-    al_destroy_bitmap(welcome_img);
     return 0;
 }
 
