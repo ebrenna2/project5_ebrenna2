@@ -135,12 +135,13 @@ void Sprite::UpdateSprites(int width, int height, int dir)
 		y = height - frameHeight;
 	}
 
-	//checks forr collidesprite - checks for collision and goes back to oldx and oldy
+	//checks for collidesprite - checks for collision and goes back to oldx and oldy
 	if (CollideSprite()) {
         x = oldx;
         y = oldy;
     }
 
+	//shark cooldown
 	if (sharkCooldown > 0)
 	{
 		sharkCooldown--;

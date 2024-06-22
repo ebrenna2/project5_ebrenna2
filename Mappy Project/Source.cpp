@@ -221,7 +221,7 @@ int main(void) {
                     //clear to black
                     al_clear_to_color(al_map_rgb(0, 0, 0));
                     //draw game over on screen, flip display, rest, game ends
-                    al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Time's up! Game Over. Try again!");
+                    al_draw_text(font, al_map_rgb(255, 255, 255), WIDTH / 2, HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "Time's up! Game over. Try again!");
                     al_flip_display();
                     al_rest(10);
                     done = true;
